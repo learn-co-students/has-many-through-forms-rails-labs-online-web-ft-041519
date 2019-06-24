@@ -1,1 +1,16 @@
-
+<%= @post.title %><br>
+<%= @post.content %><br>
+Comments: <br>
+<ol>
+<% @post.comments.each do |c| %>
+    <li><%= c.content %><li>
+<% end %>
+</ol>
+<br>
+Categories: <br>
+<ol>
+<% @post.categories.each do |c| %>
+    <li><%= c.name %><li>
+<% end %>
+</ol>
+<br>
