@@ -8,9 +8,26 @@ Comments: <br>
 </ol>
 <br>
 Categories: <br>
-<ol>
+
 <% @post.categories.each do |c| %>
-    <li><%= c.name %><li>
+    <%= c.name %><br>
 <% end %>
-</ol>
 <br>
+<%= form_for @comment do |f| %>
+    User: <%= f.collection_select :user_id, User.all, :id, :username, include_blank: false %><br><br>
+    Or, create a new user: <br><br>
+    <%= f.fields_for :users, User.new do |user_fields| %>
+        <%= user_fields.label :username %>
+        <%= user_fields.text_field :username %><br><br>
+
+        <%= user_fields.label :email %>
+        <%= user_fields.text_field :email %><br><br>
+    <% end %>
+    <br>
+    Comment: <br>
+    <%= f.label :content %>
+    <%= f.text_area :content %><br><br>
+
+    <input type="hidden" name="content[:post_id]" value="<%= @post.id %>">
+    <%= f.submit %>
+<% end %>
