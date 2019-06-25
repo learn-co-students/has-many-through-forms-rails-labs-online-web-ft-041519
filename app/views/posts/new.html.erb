@@ -1,1 +1,35 @@
-<%= render 'form', post: Post.new %>
+<!-- <%= form_for @post do |f| %>
+    <%= f.label "Title" %>
+    <%= f.text_field :title %>
+    <%= f.label "Content" %>
+    <%= f.text_area :content %>
+    <%= f.collection_check_boxes :category_ids, Category.all, :id, :name %>
+    <%= f.fields_for :categories, @post.categories.build do |categories_fields| %>
+      <%= categories_fields.text_field :name %>
+    <% end %>
+    <%= f.submit %>
+  <% end %> -->
+
+
+<h2>Create a new post</h2>
+<%= form_for @post do |f| %>
+ <h3><%= f.label "Title" %></h3>
+ <%= f.text_field :title %>
+ <h3><%= f.label "Content" %></h3>
+ <%= f.text_area :content %>
+
+ <h3><%= f.label "Pick a Category" %></h3>
+ <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) do |b|%>
+ <p>
+   <%= b.check_box %>
+   <%= b.label %>
+ </p>
+ <% end %>
+
+ <h3><%= f.label "Or, create a new category" %></h3>
+ <%= f.fields_for :categories, Category.new do |categories_fields| %><br>
+   <%= categories_fields.text_field :name %>
+ <% end %>
+ <br><br>
+ <%= f.submit %>
+<% end %>

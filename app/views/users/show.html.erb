@@ -1,1 +1,10 @@
 
+<% @user.comments.each do |comment| %>
+    <%= link_to comment.post.title, post_path(comment.post) %>
+<% end %>
+
+
+#   12) users show page should link to all of the posts the user commented on
+#   Failure/Error: expect(page).to have_link(@post.title, href: post_path(@post))
+#     expected to find link "Feeling Groovy" with href "/posts/1" but there were no matches
+#   # ./spec/features/users_spec.rb:16:in `block (3 levels) in <top (required)>'
