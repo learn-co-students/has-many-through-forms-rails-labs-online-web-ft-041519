@@ -1,32 +1,62 @@
-# 8) Posts show should display the title
-# Failure/Error: expect(page).to have_content(@post.title)
-#   expected to find text "So Awesome" in ""
-# # ./spec/features/posts_spec.rb:51:in `block (3 levels) in <top (required)>'
+<!-- 8) Posts show should display the title
+Failure/Error: expect(page).to have_content(@post.title)
+  expected to find text "So Awesome" in ""
+# ./spec/features/posts_spec.rb:51:in `block (3 levels) in <top (required)>'
 
-# 9) Posts show should display the content
-# Failure/Error: expect(page).to have_content(@post.content)
-#   expected to find text "Man am I a great blogger OR WHAT!" in ""
-# # ./spec/features/posts_spec.rb:56:in `block (3 levels) in <top (required)>'
+9) Posts show should display the content
+Failure/Error: expect(page).to have_content(@post.content)
+  expected to find text "Man am I a great blogger OR WHAT!" in ""
+# ./spec/features/posts_spec.rb:56:in `block (3 levels) in <top (required)>'
 
-# 10) Posts show should display all of the comments for that post
-#  Failure/Error: expect(page).to have_content(@comment1.content)
-#    expected to find text "This was great!" in ""
-#  # ./spec/features/posts_spec.rb:61:in `block (3 levels) in <top (required)>'
+10) Posts show should display all of the comments for that post
+ Failure/Error: expect(page).to have_content(@comment1.content)
+   expected to find text "This was great!" in ""
+ # ./spec/features/posts_spec.rb:61:in `block (3 levels) in <top (required)>'
 
-# 11) Posts show should display a list of unique users who have commented on the post
-#  Failure/Error: expect(page).to have_link(@user.username, href: user_path(@user), count: 1)
-#    expected to find link "RealBigFish" with href "/users/1" 1 time but there were no matches
-#  # ./spec/features/posts_spec.rb:67:in `block (3 levels) in <top (required)>'
+11) Posts show should display a list of unique users who have commented on the post
+ Failure/Error: expect(page).to have_link(@user.username, href: user_path(@user), count: 1)
+   expected to find link "RealBigFish" with href "/users/1" 1 time but there were no matches
+ # ./spec/features/posts_spec.rb:67:in `block (3 levels) in <top (required)>' -->
 
 
  <%= @post.title %>
  <%= @post.content %>
+ <br>
+ <% @post.categories.each do |category| %>
+  <li><%= link_to category.name, category_path %></li>
+ <% end %>
 
+ <h3>Comments on this post</h3>
  <% @post.comments.each do |comment| %>
-    <%= comment.content %>
-    <% @post.users.uniq.each do |user| %>
-        binding.pry
-        <%= link_to user.username, user_path(user) %>
-    <% end %>
+  <li><%= comment.user.username %> says: <%= comment.content %></li>
+ <% end %>
+ <br>
+ 
+ <h3>Users who have commented on this post</h3>
+ <% @users = @post.comments.map {|comment| comment.user} %>
+ <% @users.uniq.each do |user| %>
+  <li> <%= link_to user.username, user_path(user) %></li>
+ <% end %>
+ <br><br>
+
+<h3>Care to Comment?</h3>
+<%= form_for @post.comments.build do |f|  %>
+ <%= f.label :content, "Comment" %><br>
+ <%= f.text_area :content %>
+ <%= f.hidden_field :post_id, value: @post.id %>
+ <br><br>
+ <h4>Select an existing user</h4>
+ <%= f.collection_select :user_id, User.all, :id, :username, :include_blank => true %>
+ <br><br>
+ <h4>Or, create a new user</h4>
+ <%= f.fields_for :user, User.new do |users_fields| %>
+   <p>Name: </p>
+   <%= users_fields.text_field :username %>
+   <p>Email: </p>
+   <%= users_fields.text_field :email %>
+   <% end %>
+   <br><br>
+   <%= f.submit %>
+
 <% end %>
 
