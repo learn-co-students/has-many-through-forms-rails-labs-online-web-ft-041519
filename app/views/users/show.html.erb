@@ -1,1 +1,4 @@
-
+<%= @user.username %><br>
+<% @user.comments.each do |c| %>
+    <%= link_to c.post.title, c.post %>
+<% end %>
