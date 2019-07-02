@@ -1,0 +1,7 @@
+<h2><%= @category.name %></h2>
+
+Related Posts:
+  <% @category.posts.each do |post| %>
+    <%= link_to post.title, post%>
+    <%= post.content %>
+  <% end %>

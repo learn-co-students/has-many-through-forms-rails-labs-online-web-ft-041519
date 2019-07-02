@@ -1,1 +1,9 @@
+<h2><%= @user.username %></h2>
 
+
+<ol>
+  <% @user.comments.each do |comment| %>
+    <%= link_to comment.post.title, comment.post%>
+  <% end %>
+
+  </ol>
