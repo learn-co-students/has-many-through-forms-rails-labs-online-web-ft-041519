@@ -12,8 +12,7 @@
 <% end %>
 
 <% @users.uniq.each do |user| %>
-<%binding.pry%>
-    <p><%= link_to user.username, href: user_path(user) %></p>
+    <p><%= link_to user.username, user_path(user) %></p>
 <% end %>
 
 
