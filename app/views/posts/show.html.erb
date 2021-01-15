@@ -1,1 +1,29 @@
+<%= form_for @post.comments.build do |f| %>
+    <%= f.label "Content" %>
+    <%= f.text_area :content %>    
+    Existing Users: <%= f.collection_select :user_id, User.all, :id, :username %>
+    New User:    <%= f.fields_for :user, @post.comments.build.build_user do |users_fields| %>
+            <%= users_fields.text_field :username %>
+        <% end %>
+    <%= f.hidden_field :post_id %>
+    <%= f.submit %>
+<% end %>
+
+<% @post.comments.each do |x| %>  
+    <% if x.user && x.user.username %>
+        <li><%= x.user.username%> says: <%= x.content %></li>
+    <% end %>
+<% end %> 
+
+<li><%= @post.title %> <%= @post.content %></li> 
+
+<%= @post.categories.each do |x| %>
+    <%= x.name %>
+<% end %>
+
+<%= @post.users.uniq.each do |x|%>
+    <% if x.comments %>
+        <%= link_to x.username, user_path(x) %> 
+    <% end %>
+<% end %>
 
